@@ -1,0 +1,247 @@
+<html>
+    <head>
+        <title>香港中文書面語語料庫</title>
+        <meta charset="UTF-8" />
+        <!--bootstrap CDN-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <style>
+            .annotation {color:gray;font-size:small;padding-left:0.5em;padding-right:0.5em;min-width:100;}
+            td {vertical-align: top;}
+            tr:nth-child(even) {background-color: #FFFFEE;}
+            .tags {font-size:small;color:gray;}
+            .tags2 {font-size:small; color: #FF8888;}
+            .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: lightgray;
+                text-align: center;
+                padding: 10px;
+            }
+        </style>
+        <!--Load Data-->
+        <script src="loadLines.js"></script>
+    </head>
+    <body>
+        <!-- Bootstrap Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">首頁</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">關於</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">聯絡</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Project Description -->
+        <div id='description' class='container'>
+            <div class='panel-default'>
+                <div class='well container'>
+                    <h1>香港中文書面語語料庫</h1>
+                    <p>本語料庫包括了不同的文體，例如新聞、社交媒體、學術論文等等，可研究香港中文書面語的特點，例如詞彙、語法、語用。</p>
+                </div>
+            </div>
+        </div>
+                
+        <!-- Search Panel -->
+        <div id='searchArea' class='container'>
+            <div class='panel-default'>
+                    <div id='searchFormPanel'>
+                        <form id='searchForm'>
+                            <div class='form-group row'>
+                                <!-- Keyword -->
+                                <label for='searchText' class='col-sm-2 col-form-label'>搜尋文字</label>
+                                <div class='col-sm-7'>
+                                    <div class="input-group">
+                                        <input type='text' class='form-control form-control-sm' id='searchText' placeholder='輸入搜尋文字'>
+                                        <button type='submit' class='btn btn-primary btn-sm input-group-text'>搜尋</button>
+                                    </div>
+                                    <small id='searchHelp' class='form-text text-muted'>請輸入搜尋文字</small>
+                                </div>
+                                <div class='col-sm-1'>
+                                    <button class='btn btn-primary' type='button' data-bs-toggle='collapse' data-bs-target='#searchOptionPanel' aria-expanded='false' aria-controls='searchOptionPanel'>
+                                        <i class="bi bi-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id='searchOptionPanel' class='well container collapse' style='background-color: darkkhaki;'>
+                                <!-- Radio group 1: Source -->
+                                <div class='form-group row'>
+                                    <label class='col-sm-2 col-form-label'>發出者：</label>
+                                    <div class='col-sm-10'>
+                                        <div class='form-check form-check-inline'>
+                                            <input class='form-check-input' type='radio' name='source' id='sourceAll' value='all' checked>
+                                            <label class='form-check-label' for='sourceAll'>全部</label>
+                                        </div>
+                                        <div class='form-check form-check-inline'>
+                                            <input class='form-check-input' type='radio' name='source' id='sourceGovernment' value='政府部門'>
+                                            <label class='form-check-label' for='sourceGovernment'>政府部門</label>
+                                        </div>
+                                        <div class='form-check form-check-inline'>
+                                            <input class='form-check-input' type='radio' name='source' id='sourceLegislative' value='立法部門'>
+                                            <label class='form-check-label' for='sourceLegislative'>立法部門</label>
+                                        </div>
+                                        <div class='form-check form-check-inline'>
+                                            <input class='form-check-input' type='radio' name='source' id='sourceJudicial' value='司法部門'>
+                                            <label class='form-check-label' for='sourceJudicial'>司法部門</label>
+                                        </div>
+                                        <div class='form-check form-check-inline'>
+                                            <input class='form-check-input' type='radio' name='source' id='sourcePublic' value='公營機構'>
+                                            <label class='form-check-label' for='sourcePublic'>公營機構</label>
+                                        </div>
+                                        <div class='form-check form-check-inline'>
+                                            <input class='form-check-input' type='radio' name='source' id='sourceSocial' value='社會團體'>
+                                            <label class='form-check-label' for='sourceSocial'>社會團體</label>
+                                        </div>
+                                        <div class='form-check form-check-inline'>
+                                            <input class='form-check-input' type='radio' name='source' id='sourceMedia' value='報刊'>
+                                            <label class='form-check-label' for='sourceMedia'>報刊</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Radio group 2: Style -->
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">體裁：</label>
+                                    <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="style" id="styleAll" value="all" checked>
+                                            <label class="form-check-label" for="styleAll">全部</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="style" id="styleExplanation" value="説明文">
+                                            <label class="form-check-label" for="styleExplanation">説明文</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="style" id="styleNarrative" value="記敘文">
+                                            <label class="form-check-label" for="styleNarrative">記敘文</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="style" id="styleNovel" value="小説">
+                                            <label class="form-check-label" for="styleNovel">小説</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="style" id="styleLetter" value="書信">
+                                            <label class="form-check-label" for="styleLetter">書信</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="style" id="styleRegulation" value="規章制度">
+                                            <label class="form-check-label" for="styleRegulation">規章制度</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="style" id="styleSpeech" value="演講辭">
+                                            <label class="form-check-label" for="styleSpeech">演講辭</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Ratio group 3: Topic -->
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">題材：</label>
+                                    <div class="col-sm-10">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="topic" id="topicAll" value="all" checked>
+                                            <label class="form-check-label" for="topicAll">全部</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="topic" id="topicGovernment" value="公務">
+                                            <label class="form-check-label" for="topicGovernment">公務</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="topic" id="topicEducation" value="教育">
+                                            <label class="form-check-label" for="topicEducation">教育</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="topic" id="topicTechnology" value="科技">
+                                            <label class="form-check-label" for="topicTechnology">科技</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="topic" id="topicEconomy" value="經濟">
+                                            <label class="form-check-label" for="topicEconomy">經濟</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="topic" id="topicSocial" value="社會">
+                                            <label class="form-check-label" for="topicSocial">社會</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="topic" id="topicEntertainment" value="娛樂">
+                                            <label class="form-check-label" for="topicEntertainment">娛樂</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="topic" id="topicLife" value="生活">
+                                            <label class="form-check-label" for="topicLife">生活</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Result Panel -->
+        <div id='resultArea' class='container' style='min-height: 200px;'>
+            <h2>搜尋結果</h2>
+            <table id='resultTable'></table>
+        </div>
+
+        <!-- About Modal -->
+        <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="aboutModalLabel">關於香港中文書面語語料庫</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>本語料庫包括了不同的文體，例如新聞、社交媒體、學術論文等等，可研究香港中文書面語的特點，例如詞彙、語法、語用。</p>
+                        <p>本語料庫由........資助。</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <a class="navbar-brand" href="#">
+                            <img src="img/eduhk_logo.png" alt="" height="60" class="d-inline-block align-text-top">
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <a class="navbar-brand" href="#">
+                            <img src="img/eduhk_fhm_logo.png" alt="" height="60" class="d-inline-block align-text-top">
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <a class="navbar-brand" href="#">
+                            <img src="img/eduhk_crcle_logo.png" alt="" height="60" class="d-inline-block align-text-top">
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span class="text-muted">香港中文書面語語料庫</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
