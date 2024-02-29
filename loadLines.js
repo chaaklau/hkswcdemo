@@ -51,7 +51,7 @@ function addSearchForm() {
             if (entry.segments) {
                 for (var i = 0; i < entry.segments.length; ++i) {
                     if (entry.segments[i].indexOf(word) > -1) {
-                        if ((source == "all" || entry.type.indexOf(source) > -1) && (style == "all" || entry.style.indexOf(style) > -1) && (topic == "all" || entry.topic.indexOf(topic) > -1)) {
+                        if ((source == "all" || entry.style.indexOf(source) > -1) && (style == "all" || entry.style.indexOf(style) > -1) && (topic == "all" || entry.topic.indexOf(topic) > -1)) {
                                 resultTable.innerHTML += generateLine(word,entry,i);
                                 resultCount++;
                         }
