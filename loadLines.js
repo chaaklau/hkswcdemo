@@ -70,7 +70,7 @@ function generateLine(word,entry,loc) {
         + "<a href='text/" + entry.file + ".txt'>" + entry.file + "</a><br>第"  + (loc+1) + "欄" + "<br/>" + entry.source + " " + entry.style + "<br/>" + entry.topic
         + "</td><td class='pre'>" 
         + entry.segments.slice(loc-windowsize,loc).join(" ") + "</td><td class='word'>"
-        + "</td><td>" + entry.segments[loc].replaceAll(word,"<span style='color: blue'>"
+        + entry.segments[loc].replaceAll(word,"<span style='color: blue'>"
         +word
         +"</span>").replaceAll("(","<span class='tags'>(").replaceAll(")",")</span>").replaceAll("[","<span class='tags2'>[").replaceAll("]","]</span>")
         + "</td><td class='post'>" + entry.segments.slice(loc+1,loc+windowsize).join(" ") + "</td></tr>";
