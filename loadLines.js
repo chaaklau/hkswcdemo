@@ -22,10 +22,13 @@ function loadMetadata(){
             data.push(entry);
             fetch("text/"+entry.file+".txt")
             .then((response) => response.text())
+            .catch(error => {
+                console.error("File Fetch Error: ", error);
+            })
             .then(_data => {
                 entry.segments = _data.split(segmentor);
             }).catch(error => {
-                console.error("Error: ", error);
+                console.error("Segment Split Error: ", error);
             });
         }
     }).catch(error => {
