@@ -1,9 +1,9 @@
 var data = [];
-var windowsize = 8;
-var segmentor = '  ';
+let windowsize = 8;
+let segmentor = '  ';
 
 String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
+    let target = this;
     return target.split(search).join(replacement);
 };
 
@@ -11,17 +11,25 @@ function loadMetadata(){
     fetch("metadata.csv")
     .then((response) => response.text())
     .then(_data => {
-        var templist = _data.split("\n");
-        var header = templist.shift().split(",");
-        for (var i = 0; i < templist.length; ++i) {
-            var temp = templist[i].split(",");
-            var entry = {};
-            for (var j = 0; j < header.length; ++j) {
+        let templist = _data.split("\n");
+        let header = templist.shift().split(",");
+        for (let i = 0; i < templist.length; ++i) {
+            if (templist[i] == '') {
+                continue;
+            }
+            let temp = templist[i].split(",");
+            let entry = {};
+            for (let j = 0; j < header.length; ++j) {
                 entry[header[j]] = temp[j];
             }
             data.push(entry);
-            fetch("text/"+entry.file+".txt")
-            .then((response) => response.text())
+            fetch("text/"+entry.file+".txt").then((response) => {
+                if (!response.ok) {
+                    throw new Error("Not 2xx response", {cause: response});
+                } else {
+                    return response.text()
+                }
+            })
             .catch(error => {
                 console.error("File Fetch Error: ", error);
             })
@@ -40,11 +48,11 @@ function addSearchForm() {
     document.getElementById('searchForm').addEventListener("submit", (e) => {
         e.preventDefault();
     
-        var keyword = document.getElementById('searchText').value;
-        var word = keyword.trim();
-        var source = document.querySelector('input[name="source"]:checked').value;
-        var style = document.querySelector('input[name="style"]:checked').value;
-        var topic = document.querySelector('input[name="topic"]:checked').value;
+        let keyword = document.getElementById('searchText').value;
+        let word = keyword.trim();
+        let source = document.querySelector('input[name="source"]:checked').value;
+        let style = document.querySelector('input[name="style"]:checked').value;
+        let topic = document.querySelector('input[name="topic"]:checked').value;
         
         let resultTable = document.getElementById('resultTable');
         let resultCount = 0;
@@ -52,7 +60,7 @@ function addSearchForm() {
         resultTable.innerHTML = "";
         data.forEach(entry => {
             if (entry.segments) {
-                for (var i = 0; i < entry.segments.length; ++i) {
+                for (let i = 0; i < entry.segments.length; ++i) {
                     if (entry.segments[i].indexOf(word) > -1) {
                         if ((source == "all" || entry.source.indexOf(source) > -1) && (style == "all" || entry.style.indexOf(style) > -1) && (topic == "all" || entry.topic.indexOf(topic) > -1)) {
                                 resultTable.innerHTML += generateLine(word,entry,i);
